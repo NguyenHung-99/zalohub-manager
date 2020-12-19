@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>ZaloHUB User Management</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <style>
+        .search-box {
+            position: relative;
+            float: right;
+        }
+        
+        .search-box .input-group {
+            min-width: 300px;
+            position: absolute;
+            right: 0;
+        }
+        
+        .search-box .input-group-addon,
+        .search-box input {
+            border-color: #ddd;
+            border-radius: 0;
+        }
+        
+        .search-box input {
+            height: 34px;
+            padding-right: 35px;
+            background: #f4fcfd;
+            border: none;
+            border-radius: 2px !important;
+        }
+        
+        .search-box input:focus {
+            background: #fff;
+        }
+        
+        .search-box input::placeholder {
+            font-style: italic;
+        }
+        
+        .search-box .input-group-addon {
+            min-width: 35px;
+            border: none;
+            background: transparent;
+            position: absolute;
+            right: 0;
+            z-index: 9;
+            padding: 6px 0;
+        }
+        
+        .search-box i {
+            color: #a0a5b1;
+            font-size: 19px;
+            position: relative;
+            top: 2px;
+        }
+        
+        body {
+            color: #566787;
+            background: #f5f5f5;
+            font-family: 'Varela Round', sans-serif;
+            font-size: 13px;
+        }
+        
+        .table-responsive {
+            margin: 30px 0;
+        }
+        
+        .table-wrapper {
+            min-width: 1000px;
+            background: #fff;
+            padding: 20px 25px;
+            border-radius: 3px;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+        }
+        
+        .table-title {
+            padding-bottom: 15px;
+            background: #299be4;
+            color: #fff;
+            padding: 16px 30px;
+            margin: -20px -25px 10px;
+            border-radius: 3px 3px 0 0;
+        }
+        
+        .table-title h2 {
+            margin: 5px 0 0;
+            font-size: 24px;
+        }
+        
+        .table-title .btn {
+            color: #566787;
+            float: right;
+            font-size: 13px;
+            background: #fff;
+            border: none;
+            min-width: 50px;
+            border-radius: 2px;
+            border: none;
+            outline: none !important;
+            margin-left: 10px;
+        }
+        
+        .table-title .btn:hover,
+        .table-title .btn:focus {
+            color: #566787;
+            background: #f2f2f2;
+        }
+        
+        .table-title .btn i {
+            float: left;
+            font-size: 21px;
+            margin-right: 5px;
+        }
+        
+        .table-title .btn span {
+            float: left;
+            margin-top: 2px;
+        }
+        
+        table.table tr th,
+        table.table tr td {
+            border-color: #e9e9e9;
+            padding: 12px 15px;
+            vertical-align: middle;
+        }
+        
+        table.table tr th:first-child {
+            width: 60px;
+        }
+        
+        table.table tr th:last-child {
+            width: 100px;
+        }
+        
+        table.table-striped tbody tr:nth-of-type(odd) {
+            background-color: #fcfcfc;
+        }
+        
+        table.table-striped.table-hover tbody tr:hover {
+            background: #f5f5f5;
+        }
+        
+        table.table th i {
+            font-size: 13px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        
+        table.table td:last-child i {
+            opacity: 0.9;
+            font-size: 22px;
+            margin: 0 5px;
+        }
+        
+        table.table td a {
+            font-weight: bold;
+            color: #566787;
+            display: inline-block;
+            text-decoration: none;
+        }
+        
+        table.table td a:hover {
+            color: #2196F3;
+        }
+        
+        table.table td a.settings {
+            color: #2196F3;
+        }
+        
+        table.table td a.delete {
+            color: #F44336;
+        }
+        
+        table.table td i {
+            font-size: 19px;
+        }
+        
+        table.table .avatar {
+            border-radius: 50%;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        
+        .status {
+            font-size: 30px;
+            margin: 2px 2px 0 0;
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 10px;
+        }
+        
+        .text-success {
+            color: #10c469;
+        }
+        
+        .text-info {
+            color: #62c9e8;
+        }
+        
+        .text-warning {
+            color: #FFC107;
+        }
+        
+        .text-danger {
+            color: #ff5b5b;
+        }
+        
+        .pagination {
+            float: right;
+            margin: 0 0 5px;
+        }
+        
+        .pagination li a {
+            border: none;
+            font-size: 13px;
+            min-width: 30px;
+            min-height: 30px;
+            color: #999;
+            margin: 0 2px;
+            line-height: 30px;
+            border-radius: 2px !important;
+            text-align: center;
+            padding: 0 6px;
+        }
+        
+        .pagination li a:hover {
+            color: #666;
+        }
+        
+        .pagination li.active a,
+        .pagination li.active a.page-link {
+            background: #03A9F4;
+        }
+        
+        .pagination li.active a:hover {
+            background: #0397d6;
+        }
+        
+        .pagination li.disabled i {
+            color: #ccc;
+        }
+        
+        .pagination li i {
+            font-size: 16px;
+            padding-top: 6px
+        }
+        
+        .hint-text {
+            float: left;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        /* Style the header */
+        
+        header {
+            background-color: rgb(250, 102, 102);
+            padding: 30px;
+            text-align: center;
+            font-size: 35px;
+            color: white;
+        }
+        /* Create two columns/boxes that floats next to each other */
+        
+        aside {
+            float: right;
+            width: 25%;
+            height: auto;
+            /* only for demonstration, should be removed */
+            background: rgb(231, 223, 154);
+            padding: 20px;
+        }
+        
+        aside ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        nav {
+            float: left;
+            width: 15%;
+            height: 550px;
+            /* only for demonstration, should be removed */
+            background: rgb(231, 223, 154);
+            padding: 20px;
+        }
+        /* Style the list inside the menu */
+        
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        article {
+            float: left;
+            width: 75%;
+            background-color: #f1f1f1;
+            height: auto;
+            /* only for demonstration, should be removed */
+        }
+        /* Clear floats after the columns */
+        
+        section:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        /* Style the footer */
+        
+        footer {
+            background-color: rgb(250, 102, 102);
+            padding: 10px;
+            text-align: center;
+            color: white;
+        }
+        /* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
+        
+        @media (max-width: 600px) {
+            nav,
+            article {
+                width: 100%;
+                height: auto;
+            }
+        }
+        /* Fotmat profile */
+        
+        .emp-profile {
+            padding: 3%;
+            margin-top: 3%;
+            margin-bottom: 3%;
+            border-radius: 0.5rem;
+            background: #fff;
+        }
+        
+        .profile-img {
+            text-align: center;
+        }
+        
+        .profile-img img {
+            width: 70%;
+            height: 100%;
+        }
+        
+        .profile-img .file {
+            position: relative;
+            overflow: hidden;
+            margin-top: -20%;
+            width: 70%;
+            border: none;
+            border-radius: 0;
+            font-size: 15px;
+            background: #212529b8;
+        }
+        
+        .profile-img .file input {
+            position: absolute;
+            opacity: 0;
+            right: 0;
+            top: 0;
+        }
+        
+        .profile-head h5 {
+            color: #333;
+        }
+        
+        .profile-head h6 {
+            color: #0062cc;
+        }
+        
+        .profile-edit-btn {
+            border: none;
+            border-radius: 1.5rem;
+            width: 70%;
+            padding: 2%;
+            font-weight: 600;
+            color: #6c757d;
+            cursor: pointer;
+        }
+        
+        .proile-rating {
+            font-size: 12px;
+            color: #818182;
+            margin-top: 5%;
+        }
+        
+        .proile-rating span {
+            color: #495057;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        
+        .profile-head .nav-tabs {
+            margin-bottom: 5%;
+        }
+        
+        .profile-head .nav-tabs .nav-link {
+            font-weight: 500;
+            border: none;
+        }
+        
+        .profile-head .nav-tabs .nav-link.active {
+            border: none;
+            border-bottom: 2px solid #0062cc;
+        }
+        
+        .profile-work {
+            padding: 14%;
+            margin-top: -15%;
+        }
+        
+        .profile-work p {
+            font-size: 12px;
+            color: #818182;
+            font-weight: 600;
+            margin-top: 10%;
+        }
+        
+        .profile-work a {
+            text-decoration: none;
+            color: #495057;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .profile-work ul {
+            list-style: none;
+        }
+        
+        .profile-tab label {
+            font-weight: 600;
+        }
+        
+        .profile-tab p {
+            font-weight: 600;
+            color: #0062cc;
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            // Activate tooltips
+            $('[data-toggle="tooltip"]').tooltip();
+
+            // Filter table rows based on searched term
+            $("#search").on("keyup", function() {
+                var term = $(this).val().toLowerCase();
+                $("table tbody tr").each(function() {
+                    $row = $(this);
+                    var name = $row.find("td:nth-child(2)").text().toLowerCase();
+                    console.log(name);
+                    if (name.search(term) < 0) {
+                        $row.hide();
+                    } else {
+                        $row.show();
+                    }
+                });
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+
+
+    <header>
+        <h2>Zalo HUB</h2>
+        <h5>Xin Chào,
+            <%= userphone.phone %>
+        </h5>
+    </header>
+
+    <section>
+
+        <article>
+            <div class="container-xl">
+                <div class="table-responsive">
+                    <div class="table-wrapper">
+                        <div class="table-title">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <h2>User <b>Management</b></h2>
+                                </div>
+
+                                <div class="col-sm-7">
+
+                                    <a href="/new" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Add New User</span></a>
+                                    <div class="col-sm-5  ">
+                                        <div class="search-box">
+                                            <div class="input-group">
+                                                <input type="text" id="search" class="form-control" placeholder="Search by Name">
+                                                <span class="input-group-addon"><i class="material-icons">&#xE8B6;</i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Gender</th>
+                                    <!--Giowis tinsh-->
+                                    <th>Date Created</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(var i = 0; i < datas.length; i++) { %>
+
+                                    <tr>
+
+                                        <td>
+                                            <%= i+1 %>
+                                        </td>
+                                        <td>
+
+                                            <a onclick="viewFunction('<%= datas[i].id %>','<%= datas[i].phone %>', '<%= datas[i].user_name %>','<%= datas[i].gioiTinh %>','<%= datas[i].ngaySinh %>','<%= datas[i].ngayTao %>','<%= datas[i].role %>','<%= datas[i].status %>','<%= datas[i].avata %>')">
+                                                <img src="<%= datas[i].avata %>" class="avatar" alt="Avatar">
+                                                <%= datas[i].user_name %>
+                                            </a>
+                                        </td>
+
+                                        <td>
+                                            <%= datas[i].phone %>
+                                        </td>
+                                        <td>
+                                            <%= datas[i].gioiTinh %>
+                                        </td>
+                                        <td>
+                                            <%= datas[i].ngayTao %>
+                                        </td>
+                                        <td>
+                                            <%= datas[i].role %>
+                                        </td>
+                                        <td>
+                                            <span class="status text-success">&bull;</span>
+                                            <%= datas[i].status %>
+                                        </td>
+                                        <td>
+                                            <a href="/update?phone=<%= datas[i].phone %>&name=<%= datas[i].user_name %>&role=<%= datas[i].role %>&statu=<%= datas[i].status %>" class="settings" title="Update" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a>
+                                            <a href="/delete?phone=<%= datas[i].phone %>&name=<%= datas[i].user_name %>" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
+                                        </td>
+
+                                    </tr>
+
+                                    <% } %>
+                            </tbody>
+                        </table>
+                        <div class="clearfix">
+                            <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+                            <ul class="pagination">
+                                <li class="page-item disabled"><a href="#">Previous</a></li>
+                                <li class="page-item"><a href="#" class="page-link">1</a></li>
+                                <li class="page-item"><a href="#" class="page-link">2</a></li>
+                                <li class="page-item active"><a href="#" class="page-link">3</a></li>
+                                <li class="page-item"><a href="#" class="page-link">4</a></li>
+                                <li class="page-item"><a href="#" class="page-link">5</a></li>
+                                <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <aside>
+            <div class="container emp-profile">
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="profile-img">
+
+                            <img src="" alt="" id="getAvata" />
+                            <div class="file btn btn-lg btn-primary">
+                                Change Photo
+                                <input type="file" name="file" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="profile-head">
+                            <h5 id="username"></h5>
+                            <h6 id="phoneuser"></h6>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile Detail</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="tab-content profile-tab" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Phone</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="getUserPhone"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>User Name</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="getUserName"></p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Gender</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="getGioiTinh"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Role</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="getRole"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Status</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="getStatus"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>User Id</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="getUserID"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>User Name</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="name"></p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Phone</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="phone"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Ngày sinh</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="getNgaySinh"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Ngày tạo Tài khoản</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="getNgayTao"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Gender</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="gender"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Role</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="role"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Status</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="stt"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-md-8">
+                    <a href="" id="getUpdate" class="profile-edit-btn" name="btnAddMore">Edit Profile</a>
+                </div>
+
+            </div>
+        </aside>
+    </section>
+
+    <footer>
+
+        <div class="footer-right">
+            <a href="<c:url value=" /index1 "/>"><span
+			class="glyphicon glyphicon-home"></span></a>
+            <security:authorize access="hasRole('ROLE_USER')">
+                <a href="<spring:url value=" /cart/getCartById " />"><span class="glyphicon glyphicon-shopping-cart"></a>
+            </security:authorize>
+            <a href="<c:url value=" /index1 "/>"><span
+			class="glyphicon glyphicon-user"></a> <a href="#"><span
+			class="glyphicon glyphicon-envelope"></a>
+        </div>
+        <div class="footer-left">
+
+            <p class="footer-links">
+                <a href="<c:url value=" /index1 "/>">Home</a> · <a href="<c:url value=" /aboutus "/>">About Us</a> · <a href="<c:url value=" /getAllProducts " />">Product
+				List</a> · <a href="<c:url value=" /contactus "/>">Contact Us</a>
+            </p>
+
+            <p>Created by HTP team &copy; 2020</p>
+        </div>
+    </footer>
+    <!--get data user-->
+    <script>
+        function viewFunction(id, phone, name, gioitinh, ngaysinh, ngaytao, role, statu, avata) {
+            document.getElementById("username").innerHTML = name;
+            document.getElementById("phoneuser").innerHTML = phone;
+            document.getElementById("name").innerHTML = name;
+            document.getElementById("phone").innerHTML = phone;
+            document.getElementById("role").innerHTML = role;
+            document.getElementById("gender").innerHTML = gioitinh;
+            document.getElementById("stt").innerHTML = statu;
+            document.getElementById("getUserID").innerHTML = id;
+            document.getElementById("getUserName").innerHTML = name;
+            document.getElementById("getUserPhone").innerHTML = phone;
+            document.getElementById("getNgaySinh").innerHTML = ngaysinh;
+            document.getElementById("getNgayTao").innerHTML = ngaytao;
+            document.getElementById("getRole").innerHTML = role;
+            document.getElementById("getGioiTinh").innerHTML = gioitinh;
+            document.getElementById("getStatus").innerHTML = statu;
+            document.getElementById("getAvata").src = avata;
+
+            document.getElementById("getUpdate").href = "/update?phone=" + phone + "&name=" + name;
+
+        }
+    </script>
+
+</body>
+
+</html>
